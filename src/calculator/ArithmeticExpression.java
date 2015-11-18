@@ -1,6 +1,6 @@
 package calculator;
 
-public abstract class Expression {
+public abstract class ArithmeticExpression {
 	abstract float evaluate();
 
 }

@@ -1,21 +1,21 @@
 package calculator;
 
-public class BinaryExpression extends Expression {
-	private Expression expression1;
-	private Expression expression2;
+public class BinaryExpression extends ArithmeticExpression {
+	private ArithmeticExpression expression1;
+	private ArithmeticExpression expression2;
 	private BinaryOperator operator;
 
-	BinaryExpression(Expression e1, Expression e2, BinaryOperator op) {
+	BinaryExpression(ArithmeticExpression e1, ArithmeticExpression e2, BinaryOperator op) {
 		expression1 = e1;
 		expression2 = e2;
 		operator = op;
 	}
 
-	Expression getExpression1() {
+	ArithmeticExpression getExpression1() {
 		return expression1;
 	}
 
-	Expression getExpression2() {
+	ArithmeticExpression getExpression2() {
 		return expression2;
 	}
 

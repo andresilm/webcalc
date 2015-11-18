@@ -9,12 +9,12 @@ public class Calculator {
 		currentSessionHistory = new Session();
 	}
 	
-	private float evaluateMathExpression(Expression e) {
+	private float evaluateMathExpression(ArithmeticExpression e) {
 		return e.evaluate();
 	}
 	
 	private float calculate(String input) {
-		Expression e = parseMathExpression(input);
+		ArithmeticExpression e = parseInput(input);
 		float result = evaluateMathExpression(e);
 		currentSessionHistory.addCalculusToHistory(input, result);
 		
@@ -22,7 +22,7 @@ public class Calculator {
 	}
 	
 	public void saveCurrentSession() {
-		
+		sessionStore.saveSession(currentSessionHistory);
 	}
 	
 	public boolean loadSessionWithId(int Id) {
@@ -38,7 +38,7 @@ public class Calculator {
 		return loaded;
 	}
 	
-	public Expression parseMathExpression(String input) {
+	public ArithmeticExpression parseInput(String input) {
 		return null;
 		
 	}
