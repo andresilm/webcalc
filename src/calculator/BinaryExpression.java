@@ -1,25 +1,30 @@
 package calculator;
 
-public class BinaryExpression extends ArithmeticExpression {
-	private ArithmeticExpression expression1;
-	private ArithmeticExpression expression2;
+public class BinaryExpression extends MathExpression {
+	private MathExpression expression1;
+	private MathExpression expression2;
 	private BinaryOperator operator;
 
-	BinaryExpression(ArithmeticExpression e1, ArithmeticExpression e2, BinaryOperator op) {
+	BinaryExpression(MathExpression e1, MathExpression e2, BinaryOperator op) {
 		expression1 = e1;
 		expression2 = e2;
 		operator = op;
 	}
 
-	ArithmeticExpression getExpression1() {
+	MathExpression getExpression1() {
 		return expression1;
 	}
 
-	ArithmeticExpression getExpression2() {
+	MathExpression getExpression2() {
 		return expression2;
 	}
-
+	
 	@Override
+	float evaluate() {
+		return operator.apply(expression1, expression2);
+	}
+
+	/*@Override
 	float evaluate() {
 		Float result = null;
 		Float value1 = expression1.evaluate();
@@ -49,6 +54,6 @@ public class BinaryExpression extends ArithmeticExpression {
 
 		}
 		return result;
-	}
+	}*/
 
 }

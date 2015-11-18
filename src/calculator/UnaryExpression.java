@@ -1,15 +1,15 @@
 package calculator;
 
-public class UnaryExpression extends ArithmeticExpression {
-	private ArithmeticExpression expression;
+public class UnaryExpression extends MathExpression {
+	private MathExpression expression;
 	private UnaryOperator operator;
 
-	UnaryExpression(ArithmeticExpression e, UnaryOperator op) {
+	UnaryExpression(MathExpression e, UnaryOperator op) {
 		expression = e;
 		operator = op;
 	}
 
-	ArithmeticExpression getExpression() {
+	MathExpression getExpression() {
 		return expression;
 	}
 
