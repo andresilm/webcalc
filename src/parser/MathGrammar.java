@@ -9,48 +9,24 @@ public class MathGrammar implements MathGrammarConstants {
     {
       System.out.println("Reading from standard input...");
       System.out.print("Enter an expression like \u005c"1+(2+3)*4;\u005c" :");
-      try
-      {
-        switch (MathGrammar.one_line())
-        {
-          case 0 :
-          System.out.println("OK.");
-          break;
-          case 1 :
-          System.out.println("Goodbye.");
-          break;
-          default :
-          break;
-        }
-      }
-      catch (Exception e)
-      {
-        System.out.println("NOK.");
-        System.out.println(e.getMessage());
-        MathGrammar.ReInit(System.in);
-      }
-      catch (Error e)
-      {
-        System.out.println("Oops.");
-        System.out.println(e.getMessage());
-        break;
-      }
+      MathExpression expr = MathParser.one_line();
+      System.out.println("Result is:\u005cn" + expr.evaluate());
     }
   }
 
-  static final public int one_line() throws ParseException {
+  static final public MathExpression one_line() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case MINUS:
     case LOG:
     case CONSTANT:
     case 13:
       sum();
-      jj_consume_token(12);
-    {if (true) return 0;}
+      jj_consume_token(EXP_END);
+    {if (true) return sum();}
       break;
     case 12:
       jj_consume_token(12);
-    {if (true) return 1;}
+    {if (true) return null;}
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -60,8 +36,9 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public void sum() throws ParseException {
-    term();
+  static final public MathExpression sum() throws ParseException {
+  MathExpression expr1, expr2;
+    expr1 = term();
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -76,21 +53,26 @@ public class MathGrammar implements MathGrammarConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case PLUS:
         jj_consume_token(PLUS);
+        expr2 = term();
+      {if (true) return BinaryExpression(exrp1, expr2, BinaryOperator.ADDITION);}
         break;
       case MINUS:
         jj_consume_token(MINUS);
+        expr2 = term();
+      {if (true) return BinaryExpression(exrp1, expr2, BinaryOperator.SUBSTRACTION);}
         break;
       default:
         jj_la1[2] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      term();
     }
+    throw new Error("Missing return statement in function");
   }
 
   static final public void term() throws ParseException {
-    unary();
+  MathExpression expr1, expr2;
+    expr1 = unary();
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -105,55 +87,66 @@ public class MathGrammar implements MathGrammarConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MULTIPLY:
         jj_consume_token(MULTIPLY);
+        expr2 = unary();
+      {if (true) return BinaryExpression(exrp1, expr2, BinaryOperator.MULTIPLICATION);}
         break;
       case DIVIDE:
         jj_consume_token(DIVIDE);
+        expr2 = unary();
+      {if (true) return BinaryExpression(exrp1, expr2, BinaryOperator.DIVISION);}
         break;
       default:
         jj_la1[4] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      unary();
     }
   }
 
-  static final public void unary() throws ParseException {
+  static final public MathExpression unary() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case MINUS:
       jj_consume_token(MINUS);
       element();
+    {if (true) return UnaryExpression(element(), UnaryOperator.MINUS);}
       break;
     case LOG:
       jj_consume_token(LOG);
       element();
+    {if (true) return UnaryExpression(element(), UnaryOperator.LOG);}
       break;
     case CONSTANT:
     case 13:
       element();
+    {if (true) return element();}
       break;
     default:
       jj_la1[5] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
-  static final public void element() throws ParseException {
+  static final public MathExpression element() throws ParseException {
+  Token t;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case CONSTANT:
-      jj_consume_token(CONSTANT);
+      t = jj_consume_token(CONSTANT);
+    {if (true) return new Number(Float.parseFloat(t.image));}
       break;
     case 13:
       jj_consume_token(13);
       sum();
       jj_consume_token(14);
+    {if (true) return sum();}
       break;
     default:
       jj_la1[6] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    throw new Error("Missing return statement in function");
   }
 
   static private boolean jj_initialized_once = false;
@@ -172,7 +165,7 @@ public class MathGrammar implements MathGrammarConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3640,0x60,0x60,0x180,0x180,0x2640,0x2400,};
+      jj_la1_0 = new int[] {0x3320,0x30,0x30,0xc0,0xc0,0x2320,0x2200,};
    }
 
   /** Constructor with InputStream. */
