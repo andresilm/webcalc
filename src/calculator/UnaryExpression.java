@@ -4,7 +4,7 @@ public class UnaryExpression extends MathExpression {
 	private MathExpression expression;
 	private UnaryOperator operator;
 
-	UnaryExpression(MathExpression e, UnaryOperator op) {
+	public UnaryExpression(MathExpression e, UnaryOperator op) {
 		expression = e;
 		operator = op;
 	}
@@ -18,6 +18,7 @@ public class UnaryExpression extends MathExpression {
 	}
 	
 	@Override
+	public
 	float evaluate() {
 		float value = expression.evaluate();
 		return operator.apply(value);

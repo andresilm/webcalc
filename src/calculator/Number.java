@@ -7,6 +7,7 @@ public class Number extends MathExpression {
 	}
 	
 	@Override
+	public
 	float evaluate() {
 		return value;
 	}

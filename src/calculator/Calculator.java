@@ -1,5 +1,7 @@
 package calculator;
 
+import java.sql.SQLException;
+
 public class Calculator {
 	SessionStore sessionStore = null;
 	Session currentSessionHistory = null;
@@ -31,11 +33,11 @@ public class Calculator {
 		return result;
 	}
 
-	public void saveCurrentSession() {
+	public void saveCurrentSession() throws SQLException {
 		sessionStore.saveSession(currentSessionHistory);
 	}
 
-	public boolean loadSessionWithId(int Id) {
+	public boolean loadSessionWithId(int Id) throws SQLException {
 		Session s = null;
 		boolean loaded = false;
 		if (sessionStore.hasSessionWithId(Id)) {

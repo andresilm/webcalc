@@ -5,7 +5,7 @@ public class BinaryExpression extends MathExpression {
 	private MathExpression expression2;
 	private BinaryOperator operator;
 
-	BinaryExpression(MathExpression e1, MathExpression e2, BinaryOperator op) {
+	public BinaryExpression(MathExpression e1, MathExpression e2, BinaryOperator op) {
 		expression1 = e1;
 		expression2 = e2;
 		operator = op;
@@ -20,6 +20,7 @@ public class BinaryExpression extends MathExpression {
 	}
 	
 	@Override
+	public
 	float evaluate() {
 		float value1 = expression1.evaluate();
 		float value2 = expression2.evaluate();
