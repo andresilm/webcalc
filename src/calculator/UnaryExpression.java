@@ -16,7 +16,14 @@ public class UnaryExpression extends MathExpression {
 	UnaryOperator getOperator() {
 		return operator;
 	}
+	
+	@Override
+	float evaluate() {
+		float value = expression.evaluate();
+		return operator.apply(value);
+	}
 
+	/*
 	@Override
 	float evaluate() {
 		Float result = null;
@@ -32,5 +39,6 @@ public class UnaryExpression extends MathExpression {
 		}
 		return result;
 	}
+	*/
 
 }

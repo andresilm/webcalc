@@ -21,7 +21,9 @@ public class BinaryExpression extends MathExpression {
 	
 	@Override
 	float evaluate() {
-		return operator.apply(expression1, expression2);
+		float value1 = expression1.evaluate();
+		float value2 = expression2.evaluate();
+		return operator.apply(value1, value2);
 	}
 
 	/*@Override
