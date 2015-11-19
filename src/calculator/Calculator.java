@@ -17,7 +17,7 @@ public class Calculator {
 	MathGrammar parser;
 
 	public Calculator() {
-		//sessionStore = SessionStore.getInstance();
+		sessionStore = SessionStore.getInstance();
 		currentSessionHistory = new Session();
 
 	}
@@ -26,11 +26,11 @@ public class Calculator {
 		return e.evaluate();
 	}
 
-	private void saveCurrentSession(int sessionId) throws SQLException {
+	private void saveCurrentSession(String sessionId) throws SQLException {
 		sessionStore.saveSession(currentSessionHistory, sessionId);
 	}
 
-	private boolean loadSessionWithId(int Id) throws SQLException {
+	private boolean loadSessionWithId(String Id) throws SQLException {
 		Session s = null;
 		boolean loaded = false;
 		if (sessionStore.hasSessionWithId(Id)) {
@@ -44,7 +44,7 @@ public class Calculator {
 	}
 
 	public String processInput(String input) throws ParseException, SQLException {
-		String output = "OUTPUT_ERROR";
+		String output = "INTERNAL_ERROR";
 		InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 		/*
 		 * TODO.improve parser chooser. Now, testing purposes.
@@ -54,14 +54,12 @@ public class Calculator {
 			output = processCommand(input);
 		} else {
 			output = processMathInput(stream);
-		
+
 			currentSessionHistory.addCalculusToHistory(input, output);
 		}
 		return output;
 
 	}
-
-	
 
 	private boolean isCommandInput(String input) {
 		// TODO Auto-generated method stub
@@ -69,15 +67,15 @@ public class Calculator {
 	}
 
 	private String processCommand(String input) throws NumberFormatException, SQLException {
-		String output=null;
-	
+		String output = null;
+
 		if (input.startsWith("recuperar")) {
 			String[] sessionCommand = input.split("\\ ");
-			loadSessionWithId(Integer.parseInt(sessionCommand[1]));
+			loadSessionWithId(sessionCommand[1]);
 			output = printSessionHistory(currentSessionHistory);
 		} else if (input.startsWith("guardar")) {
 			String[] sessionCommand = input.split("\\ ");
-			int sessionId = Integer.parseInt(sessionCommand[1]);
+			String sessionId = sessionCommand[1];
 			saveCurrentSession(sessionId);
 			StringBuffer output2 = new StringBuffer("sesion");
 			output2.append(sessionCommand[1]);
@@ -91,7 +89,7 @@ public class Calculator {
 		StringBuffer output = new StringBuffer("");
 		for (Pair<String, String> calculus : session) {
 			output.append(calculus.getX());
-			output.append("\n=\n");
+			output.append("\n= ");
 			output.append(calculus.getY());
 			output.append("\n");
 		}
@@ -102,7 +100,7 @@ public class Calculator {
 		parser = new MathGrammar(input);
 		Float mathResult = evaluateMathExpression(parser.one_line());
 		BigDecimal value = new BigDecimal(mathResult);
-	    value = value.setScale(8, RoundingMode.HALF_EVEN);
+		value = value.setScale(8, RoundingMode.HALF_EVEN);
 		return mathResult.toString();
 
 	}

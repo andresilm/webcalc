@@ -20,13 +20,13 @@ public class Cli {
 	    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	    while (true)
 	    {
-	      System.out.print("> ");
+	      System.out.print("$> ");
 	      String input = in.readLine();
 	      
 	      
 	      String output = calc.processInput(input);
 	     
-	      System.out.println("=\n" + output);
+	      System.out.println("= " + output);
 	    }
 	  }
 }
