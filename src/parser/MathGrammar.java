@@ -8,19 +8,19 @@ import calculator.UnaryOperator;
 import calculator.Number;
 
 public class MathGrammar implements MathGrammarConstants {
-  public static void main(String args []) throws ParseException
+  public static void main(String args []) throws ParseException, parser.ParseException
   {
     MathGrammar parser = new MathGrammar(System.in);
+    System.out.println("Calculator v0.1");
     while (true)
     {
-      System.out.println("Reading from standard input...");
-      System.out.print("Enter an expression like \u005c"1+(2+3)*4\u005c" :");
-      MathExpression expr = MathGrammar.one_line();
-      System.out.println("Result is:\u005cn" + expr.evaluate());
+      System.out.print(">");
+      MathExpression expr = parser.one_line();
+      System.out.println("=\u005cn" + expr.evaluate());
     }
   }
 
-  static final public MathExpression one_line() throws ParseException {
+  final public MathExpression one_line() throws ParseException {
   MathExpression expr;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case MINUS:
@@ -28,7 +28,6 @@ public class MathGrammar implements MathGrammarConstants {
     case CONSTANT:
     case 12:
       expr = sum();
-      jj_consume_token(EXP_END);
     {if (true) return expr;}
       break;
     case EXP_END:
@@ -43,7 +42,7 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public MathExpression sum() throws ParseException {
+  final public MathExpression sum() throws ParseException {
   MathExpression expr1, expr2;
     expr1 = term();
     label_1:
@@ -78,7 +77,7 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public MathExpression term() throws ParseException {
+  final public MathExpression term() throws ParseException {
   MathExpression expr1, expr2;
     expr1 = unary();
     label_2:
@@ -113,7 +112,7 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public MathExpression unary() throws ParseException {
+  final public MathExpression unary() throws ParseException {
   MathExpression expr;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case MINUS:
@@ -139,7 +138,7 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public MathExpression element() throws ParseException {
+  final public MathExpression element() throws ParseException {
   Token t;
   MathExpression expr;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -161,17 +160,16 @@ public class MathGrammar implements MathGrammarConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
-  static public MathGrammarTokenManager token_source;
-  static SimpleCharStream jj_input_stream;
+  public MathGrammarTokenManager token_source;
+  SimpleCharStream jj_input_stream;
   /** Current token. */
-  static public Token token;
+  public Token token;
   /** Next token. */
-  static public Token jj_nt;
-  static private int jj_ntk;
-  static private int jj_gen;
-  static final private int[] jj_la1 = new int[7];
+  public Token jj_nt;
+  private int jj_ntk;
+  private int jj_gen;
+  final private int[] jj_la1 = new int[7];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
@@ -186,13 +184,6 @@ public class MathGrammar implements MathGrammarConstants {
   }
   /** Constructor with InputStream and supplied encoding */
   public MathGrammar(java.io.InputStream stream, String encoding) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser.  ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new MathGrammarTokenManager(jj_input_stream);
     token = new Token();
@@ -202,11 +193,11 @@ public class MathGrammar implements MathGrammarConstants {
   }
 
   /** Reinitialise. */
-  static public void ReInit(java.io.InputStream stream) {
+  public void ReInit(java.io.InputStream stream) {
      ReInit(stream, null);
   }
   /** Reinitialise. */
-  static public void ReInit(java.io.InputStream stream, String encoding) {
+  public void ReInit(java.io.InputStream stream, String encoding) {
     try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
@@ -217,13 +208,6 @@ public class MathGrammar implements MathGrammarConstants {
 
   /** Constructor. */
   public MathGrammar(java.io.Reader stream) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser. ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new MathGrammarTokenManager(jj_input_stream);
     token = new Token();
@@ -233,7 +217,7 @@ public class MathGrammar implements MathGrammarConstants {
   }
 
   /** Reinitialise. */
-  static public void ReInit(java.io.Reader stream) {
+  public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();
@@ -244,13 +228,6 @@ public class MathGrammar implements MathGrammarConstants {
 
   /** Constructor with generated Token Manager. */
   public MathGrammar(MathGrammarTokenManager tm) {
-    if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static parser. ");
-      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
-      System.out.println("       during parser generation.");
-      throw new Error();
-    }
-    jj_initialized_once = true;
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
@@ -267,7 +244,7 @@ public class MathGrammar implements MathGrammarConstants {
     for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
-  static private Token jj_consume_token(int kind) throws ParseException {
+  private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -283,7 +260,7 @@ public class MathGrammar implements MathGrammarConstants {
 
 
 /** Get the next Token. */
-  static final public Token getNextToken() {
+  final public Token getNextToken() {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
@@ -292,7 +269,7 @@ public class MathGrammar implements MathGrammarConstants {
   }
 
 /** Get the specific Token. */
-  static final public Token getToken(int index) {
+  final public Token getToken(int index) {
     Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
@@ -301,19 +278,19 @@ public class MathGrammar implements MathGrammarConstants {
     return t;
   }
 
-  static private int jj_ntk() {
+  private int jj_ntk() {
     if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
 
-  static private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-  static private int[] jj_expentry;
-  static private int jj_kind = -1;
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+  private int[] jj_expentry;
+  private int jj_kind = -1;
 
   /** Generate ParseException. */
-  static public ParseException generateParseException() {
+  public ParseException generateParseException() {
     jj_expentries.clear();
     boolean[] la1tokens = new boolean[14];
     if (jj_kind >= 0) {
@@ -344,11 +321,11 @@ public class MathGrammar implements MathGrammarConstants {
   }
 
   /** Enable tracing. */
-  static final public void enable_tracing() {
+  final public void enable_tracing() {
   }
 
   /** Disable tracing. */
-  static final public void disable_tracing() {
+  final public void disable_tracing() {
   }
 
 }

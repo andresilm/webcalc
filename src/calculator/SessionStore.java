@@ -43,12 +43,12 @@ public class SessionStore {
 		}
 	}
 
-	public boolean saveSession(Session session) throws SQLException {
+	public boolean saveSession(Session session, int sessionId) throws SQLException {
 		Statement statement = dbConnection.createStatement();
 		boolean noError = true;
 		if (statement.execute(this.sessionsInsertQuery)) {
 
-			for (Pair<String, Float> input : session) {
+			for (Pair<String, String> input : session) {
 
 				Object[] values = new Object[] { input.getX(), String.valueOf(input.getY()),
 						String.valueOf(SessionStore.nrSessionsInDb - 1) };
@@ -80,7 +80,7 @@ public class SessionStore {
 		if (queryResult != null) {
 			restoredSession = new Session();
 			while (queryResult.next()) {
-				restoredSession.addCalculusToHistory(queryResult.getString(0), queryResult.getInt(1));
+				restoredSession.addCalculusToHistory(queryResult.getString(0), queryResult.getString(1));
 			}
 
 		}
