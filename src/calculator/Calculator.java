@@ -31,14 +31,14 @@ public class Calculator {
 	}
 
 	private boolean loadSessionWithId(String Id) throws SQLException {
-		Session s = null;
+		
 		boolean loaded = false;
 		if (sessionStore.hasSessionWithId(Id)) {
-			s = sessionStore.loadSessionWithId(Id);
+			currentSessionHistory = sessionStore.loadSessionWithId(Id);
 			loaded = true;
 		}
 
-		currentSessionHistory = s;
+		
 
 		return loaded;
 	}
@@ -77,9 +77,9 @@ public class Calculator {
 			String[] sessionCommand = input.split("\\ ");
 			String sessionId = sessionCommand[1];
 			saveCurrentSession(sessionId);
-			StringBuffer output2 = new StringBuffer("sesion");
+			StringBuffer output2 = new StringBuffer();
 			output2.append(sessionCommand[1]);
-			output2.append(" almacenada");
+			output2.append(" almacenada.");
 			output = output2.toString();
 		}
 		return output;

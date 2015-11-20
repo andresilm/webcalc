@@ -11,7 +11,7 @@ public class MathGrammar implements MathGrammarConstants {
   public static void main(String args []) throws ParseException, parser.ParseException
   {
     MathGrammar parser = new MathGrammar(System.in);
-    System.out.println("Calculator v0.1");
+    System.out.println("Calculator TEST v0.1");
     while (true)
     {
       System.out.print(">");
@@ -28,6 +28,7 @@ public class MathGrammar implements MathGrammarConstants {
     case CONSTANT:
     case 12:
       expr = sum();
+      jj_consume_token(EXP_END);
     {if (true) return expr;}
       break;
     case EXP_END:
@@ -43,8 +44,8 @@ public class MathGrammar implements MathGrammarConstants {
   }
 
   final public MathExpression sum() throws ParseException {
-  MathExpression expr1, expr2;
-    expr1 = term();
+  MathExpression expr,expr2;
+    expr = term();
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -60,12 +61,12 @@ public class MathGrammar implements MathGrammarConstants {
       case PLUS:
         jj_consume_token(PLUS);
         expr2 = term();
-      {if (true) return new BinaryExpression(expr1, expr2, BinaryOperator.ADDITION);}
+      expr = new BinaryExpression(expr, expr2, BinaryOperator.ADDITION);
         break;
       case MINUS:
         jj_consume_token(MINUS);
         expr2 = term();
-      {if (true) return new BinaryExpression(expr1, expr2, BinaryOperator.SUBSTRACTION);}
+      expr = new BinaryExpression(expr, expr2, BinaryOperator.SUBSTRACTION);
         break;
       default:
         jj_la1[2] = jj_gen;
@@ -73,13 +74,13 @@ public class MathGrammar implements MathGrammarConstants {
         throw new ParseException();
       }
     }
-    {if (true) return expr1;}
+    {if (true) return expr;}
     throw new Error("Missing return statement in function");
   }
 
   final public MathExpression term() throws ParseException {
-  MathExpression expr1, expr2;
-    expr1 = unary();
+  MathExpression expr, expr2;
+    expr = unary();
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -94,13 +95,13 @@ public class MathGrammar implements MathGrammarConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MULTIPLY:
         jj_consume_token(MULTIPLY);
-        expr2 = unary();
-      {if (true) return new BinaryExpression(expr1, expr2, BinaryOperator.MULTIPLICATION);}
+        expr2 = element();
+      expr = new BinaryExpression(expr, expr2, BinaryOperator.MULTIPLICATION);
         break;
       case DIVIDE:
         jj_consume_token(DIVIDE);
-        expr2 = unary();
-      {if (true) return new BinaryExpression(expr1, expr2, BinaryOperator.DIVISION);}
+        expr2 = element();
+      expr = new BinaryExpression(expr, expr2, BinaryOperator.DIVISION);
         break;
       default:
         jj_la1[4] = jj_gen;
@@ -108,7 +109,7 @@ public class MathGrammar implements MathGrammarConstants {
         throw new ParseException();
       }
     }
-    {if (true) return expr1;}
+    {if (true) return expr;}
     throw new Error("Missing return statement in function");
   }
 
