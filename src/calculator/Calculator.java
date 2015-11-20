@@ -96,9 +96,16 @@ public class Calculator {
 		return output.toString();
 	}
 
-	private String processMathInput(InputStream input) throws ParseException {
+	private String processMathInput(InputStream input)  {
 		parser = new MathGrammar(input);
-		Float mathResult = evaluateMathExpression(parser.one_line());
+		
+		Float mathResult;
+		try {
+			mathResult = evaluateMathExpression(parser.one_line());
+		} catch (ParseException e) {
+			
+			return "expresión no válida";
+		}
 		BigDecimal value = new BigDecimal(mathResult);
 		value = value.setScale(8, RoundingMode.HALF_EVEN);
 		return mathResult.toString();
