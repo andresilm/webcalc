@@ -68,10 +68,18 @@ public class Calculator {
 		String output = null;
 
 		if (input.startsWith("recuperar")) {
+			/*
+			 * TODO: separate method
+			 */
 			String[] sessionCommand = input.split("\\ ");
-			loadSessionWithId(sessionCommand[1]);
-			output = printSessionHistory(currentSessionHistory);
+			if (loadSessionWithId(sessionCommand[1]))
+				output = printSessionHistory(currentSessionHistory);
+			else
+				output = "No se encontró la sesión.";
 		} else if (input.startsWith("guardar")) {
+			/*
+			 * TODO: separate method
+			 */
 			String[] sessionCommand = input.split("\\ ");
 			String sessionId = sessionCommand[1];
 			saveCurrentSession(sessionId);

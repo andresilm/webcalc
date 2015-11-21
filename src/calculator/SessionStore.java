@@ -31,9 +31,13 @@ public class SessionStore {
 	}
 
 	public void saveSession(Session session, String sessionId) throws SQLException {
+
 		
-		boolean noError = true;
 		int calculationId = 0;
+
+		if (hasSessionWithId(sessionId)) {
+			deleteSession(sessionId);
+		}
 
 		for (Pair<String, String> input : session) {
 			Statement statement = dbConnection.createStatement();
@@ -44,35 +48,52 @@ public class SessionStore {
 
 			boolean querySuccedeed = statement.execute(calculationInsertQuery.toString());
 
-
 			++calculationId;
 			statement.close();
 		}
 
+	}
+
+	private void deleteSession(String sessionId) throws SQLException {
 		
+		PreparedStatement statement = this.dbConnection.prepareStatement("delete from calculations where session_id=?;");
+		statement.setString(1, sessionId);
+
+		statement.execute();
+
+		statement.close();
 
 	}
 
-	public Session loadSessionWithId(String Id) throws SQLException {
+	public Session loadSessionWithId(String id) throws SQLException {
 
 		Session restoredSession = null;
-		Statement statement = dbConnection.createStatement();
-		// Object[] arguments = new Object[]{ Id };
-		String query = MessageFormat.format("select input,result from calculations where session_id={0};",
-				"'" + Id + "'");
+		
+		
+		PreparedStatement prepStatement = this.dbConnection.prepareStatement("select input,result from calculations where session_id=?;");
+		prepStatement.setString(1, id);
 
-		ResultSet queryResult = statement.executeQuery(query);
-		if (queryResult != null) {
+		ResultSet queryResult = prepStatement.executeQuery();
+		
 			restoredSession = new Session();
+		
 			while (queryResult.next()) {
 				restoredSession.addCalculusToHistory(queryResult.getString("input"), queryResult.getString("result"));
 			}
 
-		}
+		
 		return restoredSession;
 	}
 
-	public boolean hasSessionWithId(String id) {
-		return true;
+	public boolean hasSessionWithId(String id) throws SQLException {
+		Statement statement = dbConnection.createStatement();
+		// Object[] arguments = new Object[]{ Id };
+		//String query = MessageFormat.format("select input from calculations where session_id={0};", "'" + id + "'");
+		PreparedStatement prepStatement = this.dbConnection.prepareStatement("select input from calculations where session_id=?;");
+		prepStatement.setString(1, id);
+		ResultSet queryResult = prepStatement.executeQuery();
+
+		return queryResult.next();
+
 	}
 }
