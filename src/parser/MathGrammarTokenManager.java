@@ -117,12 +117,17 @@ private int jjMoveNfa_0(int startState, int curPos)
                   jjAddStates(0, 1);
                   break;
                case 1:
-                  if (curChar == 46)
-                     jjstateSet[jjnewStateCnt++] = 2;
+                  if (curChar != 46)
+                     break;
+                  kind = 10;
+                  jjCheckNAdd(2);
                   break;
                case 2:
-                  if ((0x3ff000000000000L & l) != 0L && kind > 10)
+                  if ((0x3ff000000000000L & l) == 0L)
+                     break;
+                  if (kind > 10)
                      kind = 10;
+                  jjCheckNAdd(2);
                   break;
                default : break;
             }

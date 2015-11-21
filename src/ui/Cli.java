@@ -1,15 +1,12 @@
 package ui;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 import calculator.Calculator;
-import calculator.MathExpression;
-import parser.MathGrammar;
+import calculator.CalculatorResponse;
 
 public class Cli {
 	public static void main(String args []) throws  IOException, SQLException
@@ -24,9 +21,10 @@ public class Cli {
 	      String input = in.readLine();
 	      
 	      
-	      String output = calc.processInput(input);
+	      CalculatorResponse output = calc.processInput(input);
 	     
-	      System.out.println("= " + output);
+	      System.out.println("= " + output.getData());
+	      System.err.println(output.getStatus());
 	    }
 	  }
 }
