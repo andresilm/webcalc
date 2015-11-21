@@ -30,13 +30,13 @@ public class SessionStore {
 		}
 	}
 
-	public boolean saveSession(Session session, String sessionId) throws SQLException {
-		Statement statement = dbConnection.createStatement();
+	public void saveSession(Session session, String sessionId) throws SQLException {
+		
 		boolean noError = true;
 		int calculationId = 0;
 
 		for (Pair<String, String> input : session) {
-
+			Statement statement = dbConnection.createStatement();
 			String calculationInsertQuery = MessageFormat.format(
 					"insert into calculations (history_id,input,result,session_id) values ({0}, {1}, {2}, {3});",
 					"'" + String.valueOf(calculationId) + "'", "'" + input.getX() + "'",
@@ -44,16 +44,12 @@ public class SessionStore {
 
 			boolean querySuccedeed = statement.execute(calculationInsertQuery.toString());
 
-			if (!querySuccedeed) {
-				noError = false;
-				break;
 
-			}
 			++calculationId;
+			statement.close();
 		}
 
-		statement.close();
-		return noError;
+		
 
 	}
 

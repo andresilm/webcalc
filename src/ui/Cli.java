@@ -12,7 +12,7 @@ import calculator.MathExpression;
 import parser.MathGrammar;
 
 public class Cli {
-	public static void main(String args []) throws ParseException, parser.ParseException, SQLException, IOException
+	public static void main(String args []) throws  IOException, SQLException
 	  {
 	    
 	    Calculator calc = new Calculator();

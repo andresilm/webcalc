@@ -43,12 +43,10 @@ public class Calculator {
 		return loaded;
 	}
 
-	public String processInput(String input) throws ParseException, SQLException {
+	public String processInput(String input) throws  SQLException {
 		String output = "INTERNAL_ERROR";
 		InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-		/*
-		 * TODO.improve parser chooser. Now, testing purposes.
-		 */
+		
 
 		if (isCommandInput(input)) {
 			output = processCommand(input);
@@ -104,7 +102,9 @@ public class Calculator {
 			mathResult = evaluateMathExpression(parser.one_line());
 		} catch (ParseException e) {
 			
-			return "expresión no válida";
+			return "Expresión mal formada. Ingrese una expresión como \"1+(2+3)*4;\"";
+		} catch (parser.TokenMgrError e) {
+			return "Se ha ingresado un símbolo no válido. Ingrese una expresión como \"1+(2+3)*4;\"";
 		}
 		BigDecimal value = new BigDecimal(mathResult);
 		value = value.setScale(8, RoundingMode.HALF_EVEN);

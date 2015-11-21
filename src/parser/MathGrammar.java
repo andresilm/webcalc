@@ -28,11 +28,11 @@ public class MathGrammar implements MathGrammarConstants {
     case CONSTANT:
     case 12:
       expr = sum();
-      jj_consume_token(EXP_END);
+      jj_consume_token(0);
     {if (true) return expr;}
       break;
-    case EXP_END:
-      jj_consume_token(EXP_END);
+    case 0:
+      jj_consume_token(0);
     {if (true) return null;}
       break;
     default:
@@ -176,7 +176,7 @@ public class MathGrammar implements MathGrammarConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1b20,0x30,0x30,0xc0,0xc0,0x1320,0x1200,};
+      jj_la1_0 = new int[] {0x1641,0x60,0x60,0x180,0x180,0x1640,0x1400,};
    }
 
   /** Constructor with InputStream. */
