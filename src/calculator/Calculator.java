@@ -41,8 +41,8 @@ public class Calculator {
 		return loaded;
 	}
 
-	public CalculatorResponse processInput(String input) throws SQLException {
-		CalculatorResponse output = null;
+	public Result processInput(String input) throws SQLException {
+		Result output = null;
 		InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 
 		if (isCommandInput(input)) {
@@ -61,8 +61,8 @@ public class Calculator {
 		return input.startsWith("recuperar") || input.startsWith("guardar");
 	}
 
-	private CalculatorResponse processCommand(String input) throws NumberFormatException, SQLException {
-		CalculatorResponse output = null;
+	private Result processCommand(String input) throws NumberFormatException, SQLException {
+		Result output = null;
 
 		if (input.startsWith("recuperar")) {
 			/*
@@ -70,10 +70,10 @@ public class Calculator {
 			 */
 			String[] sessionCommand = input.split("\\ ");
 			if (loadSessionWithId(sessionCommand[1]))
-				output = new CalculatorResponse(printSessionHistory(currentSessionHistory),
+				output = new Result(printSessionHistory(currentSessionHistory),
 						ResponseCode.SESSION_LOADED_OK);
 			else
-				output = new CalculatorResponse("No se encontró la sesión.", ResponseCode.SESSION_LOAD_FAIL);
+				output = new Result("No se encontró la sesión.", ResponseCode.SESSION_LOAD_FAIL);
 		} else if (input.startsWith("guardar")) {
 			/*
 			 * TODO: separate method
@@ -84,7 +84,7 @@ public class Calculator {
 			StringBuffer message = new StringBuffer();
 			message.append(sessionCommand[1]);
 			message.append(" almacenada.");
-			output = new CalculatorResponse(message.toString(), ResponseCode.SESSION_SAVED_OK);
+			output = new Result(message.toString(), ResponseCode.SESSION_SAVED_OK);
 		}
 		return output;
 	}
@@ -100,7 +100,7 @@ public class Calculator {
 		return output.toString();
 	}
 
-	private CalculatorResponse processMathInput(InputStream input) {
+	private Result processMathInput(InputStream input) {
 		parser = new MathGrammar(input);
 
 		Float mathResult;
@@ -108,19 +108,19 @@ public class Calculator {
 			mathResult = evaluateMathExpression(parser.one_line());
 			BigDecimal value = new BigDecimal(mathResult);
 			value = value.setScale(8, RoundingMode.HALF_EVEN);
-			return new CalculatorResponse(mathResult.toString(), ResponseCode.EXPRESSION_SOLVED);
+			return new Result(mathResult.toString(), ResponseCode.EXPRESSION_SOLVED);
 		} catch (ParseException e) {
 
-			return new CalculatorResponse("Expresión mal formada. Ingrese una expresión como \"1+(2+3)*4;\"",
+			return new Result("Expresión mal formada. Ingrese una expresión como \"1+(2+3)*4;\"",
 					ResponseCode.BAD_EXPRESSION);
 		} catch (parser.TokenMgrError e) {
-			return new CalculatorResponse(
+			return new Result(
 					"Se ha ingresado un símbolo no válido. Ingrese una expresión como \"1+(2+3)*4;\"",
 					ResponseCode.BAD_EXPRESSION);
 		} catch (NumberFormatException e) { // float division by zero is
 											// "allowed" --> result: Infinite or
 											// NAN
-			return new CalculatorResponse("Error aritmético", ResponseCode.ARITHMETIC_ERROR);
+			return new Result("Error aritmético", ResponseCode.ARITHMETIC_ERROR);
 		}
 
 	}

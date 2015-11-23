@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 import calculator.Calculator;
-import calculator.CalculatorResponse;
+import calculator.Result;
 
 public class Cli {
 	public static void main(String args []) throws  IOException, SQLException
@@ -21,7 +21,7 @@ public class Cli {
 	      String input = in.readLine();
 	      
 	      
-	      CalculatorResponse output = calc.processInput(input);
+	      Result output = calc.processInput(input);
 	     
 	      System.out.println("= " + output.getData());
 	      System.err.println(output.getStatus());

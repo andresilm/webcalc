@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import calculator.Calculator;
-import calculator.CalculatorResponse;
+import calculator.Result;
 import calculator.ResponseCode;
 
 @RestController
 public class Controller {
-
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
     private Calculator calculator = new Calculator();
     
     Controller(){
@@ -24,6 +21,8 @@ public class Controller {
     @RequestMapping("/calculator")
     public CalculatorResponse greeting(@RequestParam(value="input", defaultValue="") String input) throws SQLException {
     	System.err.println(input);
-        return calculator.processInput(input+"\n");
+    	Result result = calculator.processInput(input+"\n");
+    	CalculatorResponse response = new CalculatorResponse(result);
+        return response;
     }
 }
