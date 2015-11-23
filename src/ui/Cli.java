@@ -5,15 +5,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 
+import util.Pair;
 import calculator.Calculator;
-import calculator.Result;
+import calculator.CalculatorResponse;
 
 public class Cli {
 	public static void main(String args []) throws  IOException, SQLException
 	  {
 	    
 	    Calculator calc = new Calculator();
-	    System.out.println("Calculator v0.1");
+	    System.out.println("Calculator v0.99");
 	    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	    while (true)
 	    {
@@ -21,10 +22,13 @@ public class Cli {
 	      String input = in.readLine();
 	      
 	      
-	      Result output = calc.processInput(input);
+	      CalculatorResponse output = calc.processInput(input);
 	     
-	      System.out.println("= " + output.getOutput());
-	      System.err.println(output.getStatus());
+	      for (Pair<String,String> c: output.getCalculations()) {
+	    	  System.out.println(c.getX()+"\n= " + c.getY());
+	    	  
+	      }
+	      System.err.println("Status: "+output.getStatus());
 	    }
 	  }
 }

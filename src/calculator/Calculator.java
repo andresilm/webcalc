@@ -13,12 +13,12 @@ import util.Pair;
 
 public class Calculator {
 	SessionStore sessionStore = null;
-	Session currentSessionHistory = null;
+	Calculations currentSessionCalculations = null;
 	MathGrammar parser;
 
 	public Calculator() {
 		sessionStore = SessionStore.getInstance();
-		currentSessionHistory = new Session();
+		currentSessionCalculations = new Calculations();
 
 	}
 
@@ -27,32 +27,37 @@ public class Calculator {
 	}
 
 	private void saveCurrentSession(String sessionId) throws SQLException {
-		sessionStore.saveSession(currentSessionHistory, sessionId);
+		sessionStore.saveSession(currentSessionCalculations, sessionId);
 	}
 
 	private boolean loadSessionWithId(String Id) throws SQLException {
 
 		boolean loaded = false;
 		if (sessionStore.hasSessionWithId(Id)) {
-			currentSessionHistory = sessionStore.loadSessionWithId(Id);
+			currentSessionCalculations = sessionStore.loadSessionWithId(Id);
 			loaded = true;
 		}
 
 		return loaded;
 	}
 
-	public Result processInput(String input) throws SQLException {
-		Result output = null;
-		InputStream stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+	public CalculatorResponse processInput(String input) throws SQLException {
+		CalculatorResponse result=null;
 
-		if (isCommandInput(input)) {
-			output = processCommand(input);
+		if (!input.isEmpty()) {
+
+			if (isCommandInput(input)) {
+				result = processCommand(input);
+			} else {
+				result = processMathInput(input);
+				if (result.getStatus() == CalculatorResponseCode.SUCCESS)
+					currentSessionCalculations.addCalculusToHistory(input, result.getUserCommand(0).getY());
+			}
 		} else {
-			output = processMathInput(stream);
-
-			currentSessionHistory.addCalculusToHistory(input, output.getOutput());
+			result = new CalculatorResponse();
+			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
 		}
-		return output;
+		return result;
 
 	}
 
@@ -61,18 +66,20 @@ public class Calculator {
 		return input.startsWith("recuperar") || input.startsWith("guardar");
 	}
 
-	private Result processCommand(String input) throws NumberFormatException, SQLException {
-		Result output = null;
+	private CalculatorResponse processCommand(String input) throws NumberFormatException, SQLException {
+		CalculatorResponse output = new CalculatorResponse();
 
 		if (input.startsWith("recuperar")) {
 			/*
 			 * TODO: separate method
 			 */
 			String[] sessionCommand = input.split("\\ ");
-			if (loadSessionWithId(sessionCommand[1]))
-				output = new Result(printSessionHistory(currentSessionHistory), ResultCode.SESSION_LOADED_OK);
+			if (loadSessionWithId(sessionCommand[1])) {
+				output.addSolvedOperations(this.currentSessionCalculations);
+				output.setStatus(CalculatorResponseCode.SUCCESS);
+			}
 			else
-				output = new Result(null, ResultCode.SESSION_LOAD_FAIL);
+				output.setStatus(CalculatorResponseCode.COMMAND_EXECUTION_FAILURE);
 		} else if (input.startsWith("guardar")) {
 			/*
 			 * TODO: separate method
@@ -80,47 +87,35 @@ public class Calculator {
 			String[] sessionCommand = input.split("\\ ");
 			String sessionId = sessionCommand[1];
 			saveCurrentSession(sessionId);
-			/*
-			 * StringBuffer message = new StringBuffer();
-			 * message.append(sessionCommand[1]); message.append(" almacenada."
-			 * );
-			 */
-			output = new Result(null, ResultCode.SESSION_SAVED_OK);
+			
+			output.setStatus(CalculatorResponseCode.SUCCESS);
 		}
 		return output;
 	}
 
-	private String printSessionHistory(Session session) {
-		StringBuffer output = new StringBuffer("");
-		for (Pair<String, String> calculus : session) {
-			output.append(calculus.getX());
-			output.append("\n= ");
-			output.append(calculus.getY());
-			output.append("\n");
-		}
-		return output.toString();
-	}
-
-	private Result processMathInput(InputStream input) {
-		parser = new MathGrammar(input);
-
+	private CalculatorResponse processMathInput(String input) {
+		InputStream stream = new ByteArrayInputStream((input + "\n").getBytes(StandardCharsets.UTF_8));
+		parser = new MathGrammar(stream);
+		CalculatorResponse result = new CalculatorResponse();
 		Float mathResult;
+
 		try {
 			mathResult = evaluateMathExpression(parser.one_line());
 			BigDecimal value = new BigDecimal(mathResult);
 			value = value.setScale(8, RoundingMode.HALF_EVEN);
-			return new Result(mathResult.toString(), ResultCode.EXPRESSION_SOLVED);
+			result.addSolvedOperation(input, mathResult.toString());
+			result.setStatus(CalculatorResponseCode.SUCCESS);
 		} catch (ParseException e) {
 
-			return new Result(null, ResultCode.BAD_EXPRESSION);
+			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
 		} catch (parser.TokenMgrError e) {
-			return new Result(null, ResultCode.BAD_EXPRESSION);
+			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
 		} catch (NumberFormatException e) { // float division by zero is
 											// "allowed" --> result: Infinite or
 											// NAN
-			return new Result(null, ResultCode.ARITHMETIC_ERROR);
+			result.setStatus(CalculatorResponseCode.ARITHMETIC_ERROR);
 		}
-
+		return result;
 	}
 
 }

@@ -1,8 +1,8 @@
 package util;
 
 public class Pair<T1,T2> {
-	private T1 x;
-	private T2 y;
+	private T1 x=null;
+	private T2 y=null;
 	
 	public Pair(T1 x, T2 y) {
 		this.setX(x);

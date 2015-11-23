@@ -30,7 +30,7 @@ public class SessionStore {
 		}
 	}
 
-	public void saveSession(Session session, String sessionId) throws SQLException {
+	public void saveSession(Calculations session, String sessionId) throws SQLException {
 
 		
 		int calculationId = 0;
@@ -39,14 +39,14 @@ public class SessionStore {
 			deleteSession(sessionId);
 		}
 
-		for (Pair<String, String> input : session) {
+		for (Pair<String,String> input : session) {
 			Statement statement = dbConnection.createStatement();
 			String calculationInsertQuery = MessageFormat.format(
 					"insert into calculations (history_id,input,result,session_id) values ({0}, {1}, {2}, {3});",
 					"'" + String.valueOf(calculationId) + "'", "'" + input.getX() + "'",
 					"'" + String.valueOf(input.getY()) + "'", "'" + sessionId + "'");
 
-			boolean querySuccedeed = statement.execute(calculationInsertQuery.toString());
+			statement.execute(calculationInsertQuery.toString());
 
 			++calculationId;
 			statement.close();
@@ -65,9 +65,9 @@ public class SessionStore {
 
 	}
 
-	public Session loadSessionWithId(String id) throws SQLException {
+	public Calculations loadSessionWithId(String id) throws SQLException {
 
-		Session restoredSession = null;
+		Calculations restoredSession = null;
 		
 		
 		PreparedStatement prepStatement = this.dbConnection.prepareStatement("select input,result from calculations where session_id=?;");
@@ -75,7 +75,7 @@ public class SessionStore {
 
 		ResultSet queryResult = prepStatement.executeQuery();
 		
-			restoredSession = new Session();
+			restoredSession = new Calculations();
 		
 			while (queryResult.next()) {
 				restoredSession.addCalculusToHistory(queryResult.getString("input"), queryResult.getString("result"));
@@ -86,9 +86,6 @@ public class SessionStore {
 	}
 
 	public boolean hasSessionWithId(String id) throws SQLException {
-		Statement statement = dbConnection.createStatement();
-		// Object[] arguments = new Object[]{ Id };
-		//String query = MessageFormat.format("select input from calculations where session_id={0};", "'" + id + "'");
 		PreparedStatement prepStatement = this.dbConnection.prepareStatement("select input from calculations where session_id=?;");
 		prepStatement.setString(1, id);
 		ResultSet queryResult = prepStatement.executeQuery();
