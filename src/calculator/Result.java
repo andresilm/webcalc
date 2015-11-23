@@ -1,27 +1,27 @@
 package calculator;
 
 public class Result {
-	private String data;
-	private ResponseCode status;
+	private String output;
+	private ResultCode status;
 
-	public Result(String outputMessage, ResponseCode errorCode) {
-		this.setOutputMessage(outputMessage);
-		this.setErrorCode(errorCode);
+	public Result(String outputMessage, ResultCode errorCode) {
+			}
+
+	public String getOutput() {
+		return output;
 	}
 
-	public String getData() {
-		return data;
+	public void setOutput(String output) {
+		this.output = output;
 	}
 
-	void setOutputMessage(String outputMessage) {
-		this.data = outputMessage;
-	}
-
-	public ResponseCode getStatus() {
+	public ResultCode getStatus() {
 		return status;
 	}
 
-	void setErrorCode(ResponseCode errorCode) {
-		this.status = errorCode;
+	public void setStatus(ResultCode status) {
+		this.status = status;
 	}
+
+
 }

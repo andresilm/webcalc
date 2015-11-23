@@ -23,7 +23,7 @@ public class Cli {
 	      
 	      Result output = calc.processInput(input);
 	     
-	      System.out.println("= " + output.getData());
+	      System.out.println("= " + output.getOutput());
 	      System.err.println(output.getStatus());
 	    }
 	  }

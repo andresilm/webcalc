@@ -1,6 +1,6 @@
 package calculator;
 
-public enum ResponseCode {
+public enum ResultCode {
 	EXPRESSION_SOLVED, 
 	ARITHMETIC_ERROR, 
 	BAD_EXPRESSION, 

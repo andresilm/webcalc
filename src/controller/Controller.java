@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calculator.Calculator;
 import calculator.Result;
-import calculator.ResponseCode;
+import calculator.ResultCode;
 
 @RestController
 public class Controller {
@@ -19,10 +19,10 @@ public class Controller {
     }
 
     @RequestMapping("/calculator")
-    public CalculatorResponse greeting(@RequestParam(value="input", defaultValue="") String input) throws SQLException {
+    public ApplicationResponse greeting(@RequestParam(value="input", defaultValue="") String input) throws SQLException {
     	System.err.println(input);
     	Result result = calculator.processInput(input+"\n");
-    	CalculatorResponse response = new CalculatorResponse(result);
+    	ApplicationResponse response = new ApplicationResponse(result);
         return response;
     }
 }
