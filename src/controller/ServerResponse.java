@@ -5,11 +5,27 @@ import java.util.List;
 import util.Pair;
 
 class Calculation {
-	public String math_expression;
-	public String result;
+	private String math_expression;
+	private String result;
 	
 	Calculation(String mathExpression, String result) {
-		math_expression = mathExpression;
+		setMath_expression(mathExpression);
+		this.setResult(result);
+	}
+
+	public String getMath_expression() {
+		return math_expression;
+	}
+
+	public void setMath_expression(String math_expression) {
+		this.math_expression = math_expression;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
 		this.result = result;
 	}
 }
@@ -22,7 +38,7 @@ public class ServerResponse {
 	
 
 	public ServerResponse(List<Pair<String, String>> data,int code) {
-		this.data= new ArrayList<Calculation>();
+		this.setData(new ArrayList<Calculation>());
 		for (Pair<String, String> pair: data)
 			addToData(pair);
 		setServiceStatus(new ServiceStatus(code));
@@ -31,8 +47,8 @@ public class ServerResponse {
 
 
 
-	public void addToData(Pair<String, String> calculation) {
-		this.data.add(new Calculation(calculation.getX(),calculation.getY()));
+	private void addToData(Pair<String, String> calculation) {
+		this.getData().add(new Calculation(calculation.getX(),calculation.getY()));
 	}
 
 
@@ -43,6 +59,20 @@ public class ServerResponse {
 
 	public void setServiceStatus(ServiceStatus serviceStatus) {
 		this.serviceStatus = serviceStatus;
+	}
+
+
+
+
+	public List<Calculation> getData() {
+		return data;
+	}
+
+
+
+
+	private void setData(List<Calculation> data) {
+		this.data = data;
 	}
 
 
