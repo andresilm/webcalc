@@ -27,36 +27,6 @@ public class BinaryExpression extends MathExpression {
 		return operator.apply(value1, value2);
 	}
 
-	/*@Override
-	float evaluate() {
-		Float result = null;
-		Float value1 = expression1.evaluate();
-		Float value2 = expression2.evaluate();
-
-		switch (operator) {
-		case ADDITION: {
-			result = value1 + value2;
-			break;
-		}
-		case MULTIPLICATION: {
-			result = value1 * value2;
-			break;
-		}
-
-		case SUBSTRACTION: {
-			result = value1 - value2;
-			break;
-		}
-
-		case DIVISION: {
-			if (value2 != 0f) {
-				result = value1 / value2;
-			}
-			break;
-		}
-
-		}
-		return result;
-	}*/
+	
 
 }

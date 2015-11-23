@@ -70,10 +70,9 @@ public class Calculator {
 			 */
 			String[] sessionCommand = input.split("\\ ");
 			if (loadSessionWithId(sessionCommand[1]))
-				output = new Result(printSessionHistory(currentSessionHistory),
-						ResultCode.SESSION_LOADED_OK);
+				output = new Result(printSessionHistory(currentSessionHistory), ResultCode.SESSION_LOADED_OK);
 			else
-				output = new Result("No se encontró la sesión.", ResultCode.SESSION_LOAD_FAIL);
+				output = new Result(null, ResultCode.SESSION_LOAD_FAIL);
 		} else if (input.startsWith("guardar")) {
 			/*
 			 * TODO: separate method
@@ -81,10 +80,12 @@ public class Calculator {
 			String[] sessionCommand = input.split("\\ ");
 			String sessionId = sessionCommand[1];
 			saveCurrentSession(sessionId);
-			StringBuffer message = new StringBuffer();
-			message.append(sessionCommand[1]);
-			message.append(" almacenada.");
-			output = new Result(message.toString(), ResultCode.SESSION_SAVED_OK);
+			/*
+			 * StringBuffer message = new StringBuffer();
+			 * message.append(sessionCommand[1]); message.append(" almacenada."
+			 * );
+			 */
+			output = new Result(null, ResultCode.SESSION_SAVED_OK);
 		}
 		return output;
 	}
@@ -111,16 +112,13 @@ public class Calculator {
 			return new Result(mathResult.toString(), ResultCode.EXPRESSION_SOLVED);
 		} catch (ParseException e) {
 
-			return new Result("Expresión mal formada. Ingrese una expresión como \"1+(2+3)*4;\"",
-					ResultCode.BAD_EXPRESSION);
+			return new Result(null, ResultCode.BAD_EXPRESSION);
 		} catch (parser.TokenMgrError e) {
-			return new Result(
-					"Se ha ingresado un símbolo no válido. Ingrese una expresión como \"1+(2+3)*4;\"",
-					ResultCode.BAD_EXPRESSION);
+			return new Result(null, ResultCode.BAD_EXPRESSION);
 		} catch (NumberFormatException e) { // float division by zero is
 											// "allowed" --> result: Infinite or
 											// NAN
-			return new Result("Error aritmético", ResultCode.ARITHMETIC_ERROR);
+			return new Result(null, ResultCode.ARITHMETIC_ERROR);
 		}
 
 	}

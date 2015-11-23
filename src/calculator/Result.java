@@ -2,9 +2,11 @@ package calculator;
 
 public class Result {
 	private String output;
-	private ResultCode status;
+	private int status;
 
-	public Result(String outputMessage, ResultCode errorCode) {
+	public Result(String outputMessage, int errorCode) {
+		output = outputMessage;
+		status = errorCode;
 			}
 
 	public String getOutput() {
@@ -15,11 +17,11 @@ public class Result {
 		this.output = output;
 	}
 
-	public ResultCode getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(ResultCode status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 

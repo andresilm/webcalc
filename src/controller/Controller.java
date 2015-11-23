@@ -19,10 +19,10 @@ public class Controller {
     }
 
     @RequestMapping("/calculator")
-    public ApplicationResponse greeting(@RequestParam(value="input", defaultValue="") String input) throws SQLException {
+    public ServerResponse greeting(@RequestParam(value="input", defaultValue="") String input) throws SQLException {
     	System.err.println(input);
     	Result result = calculator.processInput(input+"\n");
-    	ApplicationResponse response = new ApplicationResponse(result);
+    	ServerResponse response = new ServerResponse(result.getOutput(), result.getStatus());
         return response;
     }
 }

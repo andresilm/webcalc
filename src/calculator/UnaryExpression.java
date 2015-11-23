@@ -24,22 +24,5 @@ public class UnaryExpression extends MathExpression {
 		return operator.apply(value);
 	}
 
-	/*
-	@Override
-	float evaluate() {
-		Float result = null;
-
-		Float value = expression.evaluate();
-		switch (operator) {
-		case MINUS: {
-			result = -value;
-		}
-		case LOG: {
-			result = (float) Math.log(value);
-		}
-		}
-		return result;
-	}
-	*/
 
 }
