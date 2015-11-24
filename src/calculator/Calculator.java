@@ -50,7 +50,7 @@ public class Calculator {
 				result = processCommand(input);
 			} else {
 				result = processMathInput(input);
-				if (result.getStatus() == CalculatorResponseCode.SUCCESS)
+				if (result.getStatus() == CalculatorResponseCode.OK)
 					currentSessionCalculations.addCalculusToHistory(input, result.getUserCommand(0).getY());
 			}
 		} else {
@@ -66,7 +66,7 @@ public class Calculator {
 		return input.startsWith("recuperar") || input.startsWith("guardar");
 	}
 
-	private CalculatorResponse processCommand(String input) throws NumberFormatException, SQLException {
+	private CalculatorResponse processCommand(String input) throws NumberFormatException {
 		CalculatorResponse output = new CalculatorResponse();
 
 		if (input.startsWith("recuperar")) {
@@ -74,21 +74,32 @@ public class Calculator {
 			 * TODO: separate method
 			 */
 			String[] sessionCommand = input.split("\\ ");
-			if (loadSessionWithId(sessionCommand[1])) {
+			boolean session_found=false;
+			try {
+				session_found = loadSessionWithId(sessionCommand[1]);
+			} catch (SQLException e) {
+				output.setStatus(CalculatorResponseCode.INTERNAL_ERROR);
+			}
+			if (session_found) {
 				output.addSolvedOperations(this.currentSessionCalculations);
-				output.setStatus(CalculatorResponseCode.SUCCESS);
+				output.setStatus(CalculatorResponseCode.OK);
 			}
 			else
-				output.setStatus(CalculatorResponseCode.COMMAND_EXECUTION_FAILURE);
+				output.setStatus(CalculatorResponseCode.SESSION_NOT_FOUND);
 		} else if (input.startsWith("guardar")) {
 			/*
 			 * TODO: separate method
 			 */
 			String[] sessionCommand = input.split("\\ ");
 			String sessionId = sessionCommand[1];
-			saveCurrentSession(sessionId);
+			try {
+				saveCurrentSession(sessionId);
+				output.setStatus(CalculatorResponseCode.OK);
+			} catch (SQLException e) {
+				output.setStatus(CalculatorResponseCode.INTERNAL_ERROR);
+			}
 			
-			output.setStatus(CalculatorResponseCode.SUCCESS);
+			
 		}
 		return output;
 	}
@@ -101,10 +112,9 @@ public class Calculator {
 
 		try {
 			mathResult = evaluateMathExpression(parser.one_line());
-			BigDecimal value = new BigDecimal(mathResult);
-			value = value.setScale(8, RoundingMode.HALF_EVEN);
+			
 			result.addSolvedOperation(input, mathResult.toString());
-			result.setStatus(CalculatorResponseCode.SUCCESS);
+			result.setStatus(CalculatorResponseCode.OK);
 		} catch (ParseException e) {
 
 			result.setStatus(CalculatorResponseCode.INVALID_INPUT);

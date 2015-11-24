@@ -7,7 +7,7 @@ import util.Pair;
 class Calculation {
 	private String math_expression;
 	private String result;
-	
+
 	Calculation(String mathExpression, String result) {
 		setMath_expression(mathExpression);
 		this.setResult(result);
@@ -31,50 +31,35 @@ class Calculation {
 }
 
 public class ServerResponse {
-	
-	
+
 	private List<Calculation> data;
-	private ServiceStatus serviceStatus;
-	
+	private ServiceStatus service_status;
 
-	public ServerResponse(List<Pair<String, String>> data,int code) {
+	public ServerResponse(List<Pair<String, String>> data, int code) {
 		this.setData(new ArrayList<Calculation>());
-		for (Pair<String, String> pair: data)
+		for (Pair<String, String> pair : data)
 			addToData(pair);
-		setServiceStatus(new ServiceStatus(code));
+		setService_status(new ServiceStatus(code));
 	}
-
-
-
 
 	private void addToData(Pair<String, String> calculation) {
-		this.getData().add(new Calculation(calculation.getX(),calculation.getY()));
+		this.getData().add(new Calculation(calculation.getX(), calculation.getY()));
 	}
 
-
-	public ServiceStatus getServiceStatus() {
-		return serviceStatus;
+	public ServiceStatus getService_status() {
+		return service_status;
 	}
 
-
-	public void setServiceStatus(ServiceStatus serviceStatus) {
-		this.serviceStatus = serviceStatus;
+	public void setService_status(ServiceStatus serviceStatus) {
+		this.service_status = serviceStatus;
 	}
-
-
-
 
 	public List<Calculation> getData() {
 		return data;
 	}
 
-
-
-
 	private void setData(List<Calculation> data) {
 		this.data = data;
 	}
 
-
-	
 }
