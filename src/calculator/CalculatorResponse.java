@@ -1,14 +1,13 @@
 package calculator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import util.Pair;
 
 public class CalculatorResponse {
 	private List<Pair<String,String>> calculations;
-	private int status;
+	private CalculatorStatus status;
 
 	public CalculatorResponse() {
 		setCalculations(new ArrayList<Pair<String,String>>());
@@ -23,11 +22,11 @@ public class CalculatorResponse {
 		this.calculations = calculations;
 	}
 
-	public int getStatus() {
+	public CalculatorStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(CalculatorStatus status) {
 		this.status = status;
 	}
 

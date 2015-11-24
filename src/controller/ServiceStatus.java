@@ -4,9 +4,9 @@ public class ServiceStatus {
 	private int code;
 	private String message;
 	
-	ServiceStatus(int calculatorStatusCode) {
+	ServiceStatus(int calculatorStatusCode, String statusMessage) {
 		this.setCode(calculatorStatusCode);
-		message = setErrorMessage(calculatorStatusCode);
+		message = statusMessage;
 		
 	}
 	public String setErrorMessage(int calculatorStatusCode) {

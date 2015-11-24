@@ -50,12 +50,12 @@ public class Calculator {
 				result = processCommand(input);
 			} else {
 				result = processMathInput(input);
-				if (result.getStatus() == CalculatorResponseCode.OK)
+				if (result.getStatus() == CalculatorStatus.OK)
 					currentSessionCalculations.addCalculusToHistory(input, result.getUserCommand(0).getY());
 			}
 		} else {
 			result = new CalculatorResponse();
-			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
+			result.setStatus(CalculatorStatus.INVALID_INPUT);
 		}
 		return result;
 
@@ -78,14 +78,14 @@ public class Calculator {
 			try {
 				session_found = loadSessionWithId(sessionCommand[1]);
 			} catch (SQLException e) {
-				output.setStatus(CalculatorResponseCode.INTERNAL_ERROR);
+				output.setStatus(CalculatorStatus.INTERNAL_ERROR);
 			}
 			if (session_found) {
 				output.addSolvedOperations(this.currentSessionCalculations);
-				output.setStatus(CalculatorResponseCode.OK);
+				output.setStatus(CalculatorStatus.OK);
 			}
 			else
-				output.setStatus(CalculatorResponseCode.SESSION_NOT_FOUND);
+				output.setStatus(CalculatorStatus.SESSION_NOT_FOUND);
 		} else if (input.startsWith("guardar")) {
 			/*
 			 * TODO: separate method
@@ -94,9 +94,9 @@ public class Calculator {
 			String sessionId = sessionCommand[1];
 			try {
 				saveCurrentSession(sessionId);
-				output.setStatus(CalculatorResponseCode.OK);
+				output.setStatus(CalculatorStatus.OK);
 			} catch (SQLException e) {
-				output.setStatus(CalculatorResponseCode.INTERNAL_ERROR);
+				output.setStatus(CalculatorStatus.INTERNAL_ERROR);
 			}
 			
 			
@@ -114,16 +114,16 @@ public class Calculator {
 			mathResult = evaluateMathExpression(parser.one_line());
 			
 			result.addSolvedOperation(input, mathResult.toString());
-			result.setStatus(CalculatorResponseCode.OK);
+			result.setStatus(CalculatorStatus.OK);
 		} catch (ParseException e) {
 
-			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
+			result.setStatus(CalculatorStatus.INVALID_INPUT);
 		} catch (parser.TokenMgrError e) {
-			result.setStatus(CalculatorResponseCode.INVALID_INPUT);
+			result.setStatus(CalculatorStatus.INVALID_INPUT);
 		} catch (NumberFormatException e) { // float division by zero is
 											// "allowed" --> result: Infinite or
 											// NAN
-			result.setStatus(CalculatorResponseCode.ARITHMETIC_ERROR);
+			result.setStatus(CalculatorStatus.ARITHMETIC_ERROR);
 		}
 		return result;
 	}
