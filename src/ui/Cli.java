@@ -28,7 +28,7 @@ public class Cli {
 	    	  System.out.println(c.getX()+"\n= " + c.getY());
 	    	  
 	      }
-	      System.out.println(output.getStatus().description());
+	      System.err.println("Status: "+output.getStatus());
 	    }
 	  }
 }

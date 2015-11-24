@@ -35,11 +35,11 @@ public class ServerResponse {
 	private List<Calculation> data;
 	private ServiceStatus service_status;
 
-	public ServerResponse(List<Pair<String, String>> data, int code, String statusMessage) {
+	public ServerResponse(List<Pair<String, String>> data, int code) {
 		this.setData(new ArrayList<Calculation>());
 		for (Pair<String, String> pair : data)
 			addToData(pair);
-		setService_status(new ServiceStatus(code,statusMessage));
+		setService_status(new ServiceStatus(code));
 	}
 
 	private void addToData(Pair<String, String> calculation) {

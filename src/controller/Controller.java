@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import calculator.Calculator;
 import calculator.CalculatorResponse;
-import calculator.CalculatorStatus;
+import calculator.CalculatorResponseCode;
 import util.Pair;
 
 @RestController
@@ -26,7 +26,7 @@ public class Controller {
     	
     	CalculatorResponse result = calculator.processInput(input);
     	
-    	ServerResponse response = new ServerResponse(result.getCalculations(),result.getStatus().value(),result.getStatus().description());
+    	ServerResponse response = new ServerResponse(result.getCalculations(),result.getStatus());
         return response;
     }
 }
